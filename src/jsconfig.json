@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "baseUrl": "./",
+    "paths": {
+      "react-native-web/*": ["../node_modules/react-native-web/*"]
+    }
+  },
+  "include": ["./**/*.js"]
+}

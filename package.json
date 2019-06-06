@@ -1,0 +1,24 @@
+{
+  "name": "react-native-web-wrapper",
+  "version": "1.0.0",
+  "description": "react native web wrapper",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "patch-package",
+    "prepare": "node ./scripts/prepare.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@gitlab.gf.com.cn:10022/hushicai/react-native-web-wrapper.git"
+  },
+  "author": "hushicai <bluthcy@gmail.com> (https://hushicai.github.io)",
+  "license": "MIT",
+  "devDependencies": {
+    "glob": "^7.1.4",
+    "patch-package": "^6.1.2",
+    "prettier": "^1.17.1"
+  },
+  "dependencies": {
+    "react-native-web": "^0.11.4"
+  }
+}

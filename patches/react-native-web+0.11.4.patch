@@ -1,0 +1,152 @@
+diff --git a/node_modules/react-native-web/src/vendor/react-native/Animated/createAnimatedComponent.js b/node_modules/react-native-web/src/vendor/react-native/Animated/createAnimatedComponent.js
+index 9ba7aa0..8a92012 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/Animated/createAnimatedComponent.js
++++ b/node_modules/react-native-web/src/vendor/react-native/Animated/createAnimatedComponent.js
+@@ -47,7 +47,7 @@ function createAnimatedComponent(Component: any): any {
+       this._component.setNativeProps(props);
+     }
+ 
+-    UNSAFE_componentWillMount() {
++    componentWillMount() {
+       this._attachProps(this.props);
+     }
+ 
+@@ -132,7 +132,7 @@ function createAnimatedComponent(Component: any): any {
+       oldPropsAnimated && oldPropsAnimated.__detach();
+     }
+ 
+-    UNSAFE_componentWillReceiveProps(newProps) {
++    componentWillReceiveProps(newProps) {
+       this._attachProps(newProps);
+     }
+ 
+diff --git a/node_modules/react-native-web/src/vendor/react-native/FlatList/index.js b/node_modules/react-native-web/src/vendor/react-native/FlatList/index.js
+index c9512a1..de7ec13 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/FlatList/index.js
++++ b/node_modules/react-native-web/src/vendor/react-native/FlatList/index.js
+@@ -414,11 +414,11 @@ class FlatList<ItemT> extends React.PureComponent<Props<ItemT>, void> {
+     }
+   }
+ 
+-  UNSAFE_componentWillMount() {
++  componentWillMount() {
+     this._checkProps(this.props);
+   }
+ 
+-  UNSAFE_componentWillReceiveProps(nextProps: Props<ItemT>) {
++  componentWillReceiveProps(nextProps: Props<ItemT>) {
+     invariant(
+       nextProps.numColumns === this.props.numColumns,
+       'Changing numColumns on the fly is not supported. Change the key prop on FlatList when ' +
+diff --git a/node_modules/react-native-web/src/vendor/react-native/ListView/index.js b/node_modules/react-native-web/src/vendor/react-native/ListView/index.js
+index c339af5..a286438 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/ListView/index.js
++++ b/node_modules/react-native-web/src/vendor/react-native/ListView/index.js
+@@ -348,7 +348,7 @@ var ListView = createReactClass({
+     return this._scrollComponent.getInnerViewNode();
+   },
+ 
+-  UNSAFE_componentWillMount: function() {
++  componentWillMount: function() {
+     // this data should never trigger a render pass, so don't put in state
+     this.scrollProperties = {
+       visibleLength: null,
+@@ -369,7 +369,7 @@ var ListView = createReactClass({
+     });
+   },
+ 
+-  UNSAFE_componentWillReceiveProps: function(nextProps: Object) {
++  componentWillReceiveProps: function(nextProps: Object) {
+     if (
+       this.props.dataSource !== nextProps.dataSource ||
+       this.props.initialListSize !== nextProps.initialListSize
+diff --git a/node_modules/react-native-web/src/vendor/react-native/SwipeableListView/index.js b/node_modules/react-native-web/src/vendor/react-native/SwipeableListView/index.js
+index fe20cc4..4405264 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/SwipeableListView/index.js
++++ b/node_modules/react-native-web/src/vendor/react-native/SwipeableListView/index.js
+@@ -103,7 +103,7 @@ class SwipeableListView extends React.Component<Props, State> {
+     };
+   }
+ 
+-  UNSAFE_componentWillReceiveProps(nextProps: Props): void {
++  componentWillReceiveProps(nextProps: Props): void {
+     if (this.state.dataSource.getDataSource() !== nextProps.dataSource.getDataSource()) {
+       this.setState({
+         dataSource: nextProps.dataSource,
+diff --git a/node_modules/react-native-web/src/vendor/react-native/SwipeableRow/index.js b/node_modules/react-native-web/src/vendor/react-native/SwipeableRow/index.js
+index 7be9863..070c99e 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/SwipeableRow/index.js
++++ b/node_modules/react-native-web/src/vendor/react-native/SwipeableRow/index.js
+@@ -120,7 +120,7 @@ const SwipeableRow = createReactClass({
+     };
+   },
+ 
+-  UNSAFE_componentWillMount(): void {
++  componentWillMount(): void {
+     this._panResponder = PanResponder.create({
+       onMoveShouldSetPanResponderCapture: this._handleMoveShouldSetPanResponderCapture,
+       onPanResponderGrant: this._handlePanResponderGrant,
+@@ -144,7 +144,7 @@ const SwipeableRow = createReactClass({
+     }
+   },
+ 
+-  UNSAFE_componentWillReceiveProps(nextProps: Object): void {
++  componentWillReceiveProps(nextProps: Object): void {
+     /**
+      * We do not need an "animateOpen(noCallback)" because this animation is
+      * handled internally by this component.
+diff --git a/node_modules/react-native-web/src/vendor/react-native/VirtualizedList/index.js b/node_modules/react-native-web/src/vendor/react-native/VirtualizedList/index.js
+index 7a2b1d0..5166fc3 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/VirtualizedList/index.js
++++ b/node_modules/react-native-web/src/vendor/react-native/VirtualizedList/index.js
+@@ -618,17 +618,19 @@ class VirtualizedList extends React.PureComponent<Props, State> {
+     this._fillRateHelper.deactivateAndFlush();
+   }
+ 
+-  static getDerivedStateFromProps(newProps: Props, prevState: State) {
+-    const {data, extraData, getItemCount, maxToRenderPerBatch} = newProps;
++  componentWillReceiveProps(nextProps: Props) {
++    const {data, extraData, getItemCount, maxToRenderPerBatch} = nextProps;
+     // first and last could be stale (e.g. if a new, shorter items props is passed in), so we make
+     // sure we're rendering a reasonable range here.
+-    return {
+-      first: Math.max(
+-        0,
+-        Math.min(prevState.first, getItemCount(data) - 1 - maxToRenderPerBatch),
+-      ),
+-      last: Math.max(0, Math.min(prevState.last, getItemCount(data) - 1)),
+-    };
++    this.setState(prevState => {
++      return {
++        first: Math.max(
++          0,
++          Math.min(prevState.first, getItemCount(data) - 1 - maxToRenderPerBatch),
++        ),
++        last: Math.max(0, Math.min(prevState.last, getItemCount(data) - 1)),
++      };
++    });
+   }
+ 
+   _pushCells(
+diff --git a/node_modules/react-native-web/src/vendor/react-native/VirtualizedSectionList/index.js b/node_modules/react-native-web/src/vendor/react-native/VirtualizedSectionList/index.js
+index 8e213f6..52bb1d3 100644
+--- a/node_modules/react-native-web/src/vendor/react-native/VirtualizedSectionList/index.js
++++ b/node_modules/react-native-web/src/vendor/react-native/VirtualizedSectionList/index.js
+@@ -354,7 +354,7 @@ class VirtualizedSectionList<SectionT: SectionBase> extends React.PureComponent<
+     this.state = this._computeState(props);
+   }
+ 
+-  UNSAFE_componentWillReceiveProps(nextProps: Props<SectionT>) {
++  componentWillReceiveProps(nextProps: Props<SectionT>) {
+     this.setState(this._computeState(nextProps));
+   }
+ 
+@@ -439,7 +439,7 @@ class ItemWithSeparator extends React.Component<
+     },
+   };
+ 
+-  UNSAFE_componentWillReceiveProps(props: ItemWithSeparatorProps) {
++  componentWillReceiveProps(props: ItemWithSeparatorProps) {
+     this.setState(state => ({
+       separatorProps: {
+         ...this.state.separatorProps,
